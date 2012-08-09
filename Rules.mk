@@ -1,0 +1,2 @@
+TARGET := ~/bin
+RESOURCES := ~/.slets

@@ -1,0 +1,26 @@
+Lyrics
+======
+
+Description
+-----------
+
+Fetches current song from MPD (simple modification to fit other players),
+downloads lyrics from lyrics.wikia.com and outputs to stdout (using less if
+output is longer than console)
+
+Usage
+-----
+
+% lyrics
+
+
+Note on other players
+---------------------
+
+In order to work with other players, delete line 25 and assign variable current
+data from your player in format: "artist:title" (may contain spaces)
+
+
+<!--
+  vim: ft=markdown tw=80
+-->

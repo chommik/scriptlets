@@ -1,0 +1,42 @@
+#!/bin/zsh
+
+# Copyright (c) 2012, Rafal Macyszyn <chommik12@gmail.com>
+
+# Permission to use, copy, modify, and/or distribute this software for 
+# any purpose with or without fee is hereby granted, provided that the 
+# above copyright notice and this permission notice appear in all copies.
+
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES 
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF 
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE 
+# FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY 
+# DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER 
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING 
+# OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+tmp=`mktemp /tmp/lyrics.XXXXXX`
+
+
+fetch() {
+  curl -s "http://lyrics.wikia.com/$1?action=raw" > $tmp
+}
+
+# if you want to fetch title from other source, replace this line
+current=$(mpc current -f "%artist%:%title%"
+
+current=$(echo "$current" | sed -re 's/ /_/g')
+
+fetch $current
+
+if grep -Po "#REDIRECT \[\[(.+)\]\]" $tmp >/dev/null; then
+  current=$(sed -re 's/#REDIRECT \[\[(.+)\]\]/\1/;s/ /_/g' $tmp)
+  fetch $current
+fi
+
+if [ `cat $tmp | wc -l` -ge $LINES ]; then
+  grep -Pzo '(?s)<lyrics>(.+?)</lyrics>' $tmp | head -n -1 | tail -n +2 | less
+else
+  grep -Pzo '(?s)<lyrics>(.+?)</lyrics>' $tmp | head -n -1 | tail -n +2
+fi
+
+rm $tmp
