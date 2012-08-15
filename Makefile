@@ -1,4 +1,4 @@
-scripts := $(shell find . -mindepth 1 -type d)
+scripts := $(shell find . -mindepth 1 -type d -path './[^\.]*')
 
 $(scripts):
 	@cd $@; $(MAKE) $(MFLAGS) $(MAKECMDGOALS)
