@@ -22,7 +22,7 @@ fetch() {
 }
 
 # if you want to fetch title from other source, replace this line
-current=$(mpc current -f "%artist%:%title%"
+current=$(mpc current -f "%artist%:%title%")
 
 current=$(echo "$current" | sed -re 's/ /_/g')
 
