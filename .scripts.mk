@@ -2,14 +2,19 @@ include ../Rules.mk
 
 install-default:
 	install -m 755 $(SCRIPT) $(TARGET)/$(SCRIPT)
+	[ -d $(RESOURCES) ] || mkdir -p $(RESOURCES)
+	echo "$(VERSION)" > $(RESOURCES)/$(SCRIPT)-ver
 
 check-default:
 	@if [ -f $(TARGET)/$(SCRIPT) ]; then\
-		echo "[$(SCRIPT)-$(VERSION)]" installed;\
+		ver="unknown";\
+		if [ -f $(RESOURCES)/$(SCRIPT)-ver ]; then\
+			ver=`cat $(RESOURCES)/$(SCRIPT)-ver`;\
+		fi;\
+		echo "[$(SCRIPT)-$(VERSION)]" installed, version $$ver;\
 	else\
 		echo "[$(SCRIPT)-$(VERSION)]" not installed;\
 	fi
-	#TODO: version check
 
 .SILENT: check check-default
 
