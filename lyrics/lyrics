@@ -34,9 +34,9 @@ if grep -Po "#REDIRECT \[\[(.+)\]\]" $tmp >/dev/null; then
 fi
 
 if [ `cat $tmp | wc -l` -ge $LINES ]; then
-  grep -Pzo '(?s)<lyrics>(.+?)</lyrics>' $tmp | head -n -1 | tail -n +2 | less
+  grep -Pzoa -m 1 '(?s)<lyrics>([^\<\>]+?)</lyrics>' $tmp | head -n -1 | tail -n +2 | less
 else
-  grep -Pzo '(?s)<lyrics>(.+?)</lyrics>' $tmp | head -n -1 | tail -n +2
+  grep -Pzoa -m 1 '(?s)<lyrics>([^\<\>]+?)</lyrics>' $tmp | head -n -1 | tail -n +2
 fi
 
 rm $tmp
